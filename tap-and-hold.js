@@ -53,7 +53,7 @@ const engine = {
     }
   }
 }
-const config = {
+let config = {
   holdTime: 1000,
   tapMaxDistance: 10,
   tapTime: 200
@@ -183,7 +183,8 @@ const touchTap = {
       document.addEventListener(evt, handlerOriginEvent, false)
     })
   },
-  install (Vue) {
+  install (Vue, options = {}) {
+    config = Object.assign(config, options)
     this.init()
     Vue.directive('tap', {
       isFn: true,

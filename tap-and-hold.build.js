@@ -179,6 +179,9 @@ var touchTap = {
     });
   },
   install: function install(Vue) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    config = Object.assign(config, options);
     this.init();
     Vue.directive('tap', {
       isFn: true,
