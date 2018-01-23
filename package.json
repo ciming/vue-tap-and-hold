@@ -1,13 +1,24 @@
 {
   "name": "vue-tap-and-hold",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a lightweight vue plugin for Tap Event and Long Press Event in mobile",
   "main": "tap-and-hold.build.js",
   "scripts": {
     "build": "rollup --config"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "ciming",
+  "keywords": [
+    "vue",
+    "vue2",
+    "tap",
+    "long press",
+    "long click"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ciming/vue-tap-and-hold"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",

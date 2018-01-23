@@ -3,6 +3,9 @@
 This is a lightweight vue2 plugin for Tap Event and Long Press Event in mobile
 
 ## How To use
+```bash
+npm i vue-tap-and-hold --save
+```
 ```javascript
 import TapAndHold form 'vue-tap-and-hold'
 Vue.use(vueTap, {
@@ -16,12 +19,14 @@ template
 ```html
 <!-- tap -->
 <p v-tap="handle"></p> 
-<p v-tap.prevent="handle"></p> 
-<p v-tap.stop="handle"></p> 
 
 <!-- long press -->
 <p v-hold="handle"></p> 
-<p v-hold.prevent="handle"></p>
+
+<!-- preventDefault -->
+<p v-hold.prevent="handle"></p> 
+
+<!-- stopPropagation -->
 <p v-hold.stop="handle"></p> 
 
 <!-- with params -->
