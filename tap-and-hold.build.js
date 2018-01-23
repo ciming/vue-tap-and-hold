@@ -208,9 +208,6 @@ var touchTap = {
         engine.unbind(el, 'hold');
       }
     });
-  },
-  _on: function _on(el, evt, handler) {
-    engine.bind(el, evt, handler);
   }
 };
 
