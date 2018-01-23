@@ -1,3 +1,4 @@
+/* eslint-disable */
 let touchStart = false
 let startTime = 0
 let startEvent = null

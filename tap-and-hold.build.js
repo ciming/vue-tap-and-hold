@@ -4,6 +4,7 @@
 	(global.vueTapAndHold = factory());
 }(this, (function () { 'use strict';
 
+/* eslint-disable */
 var touchStart = false;
 var startTime = 0;
 var pos = {
