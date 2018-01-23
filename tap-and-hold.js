@@ -28,17 +28,16 @@ const engine = {
   },
   bind (el, evt, handler, modifiers) {
     el.listeners = el.listeners || {}
+    el.modifiers = el.modifiers || modifiers
     if (!el.listeners[evt]) {
       el.listeners[evt] = [handler]
     } else {
       el.listeners[evt].push(handler)
     }
     const proxy = e => {
-      if (modifiers) {
-        if (modifiers.prevent) e.stopPropagation()
-        if (modifiers.stop) e.stopPropagation()
-      }
       handler.call(e.target, e)
+      if (el.modifiers && el.modifiers.prevent) e.preventDefault();
+      if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     }
     if (el.addEventListener) {
       el.addEventListener(evt, proxy, false)
@@ -112,7 +111,7 @@ const gestures = {
     const distance = utils.getDistance(pos.start[0], pos.move ? pos.move[0] : pos.start[0])
     clearTimeout(holdTimer)
     if (config.tapMaxDistance < distance) return false
-    if (config.holdTime > distance && utils.getFingers(evt) <= 1) {
+    if (config.holdTime > touchTime && utils.getFingers(evt) <= 1) {
       tapped = true
       prevTappedEndTime = now
       prevTappedPos = pos.start[0]
@@ -200,7 +199,10 @@ const touchTap = {
       isFn: true,
       acceptStatement: true,
       bind (el, binding) {
-        engine.bind(el, 'hold', binding.value, binding.modifiers)
+        el.addEventListener('contextmenu', evt => {
+          evt.preventDefault();
+        })
+        engine.bind(el, 'hold', binding.value)
       },
       unbind (el) {
         engine.unbind(el, 'hold')

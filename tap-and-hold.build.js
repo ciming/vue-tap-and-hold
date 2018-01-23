@@ -5,6 +5,7 @@
 }(this, (function () { 'use strict';
 
 var touchStart = false;
+var startTime = 0;
 var pos = {
   start: null,
   end: null
@@ -31,17 +32,16 @@ var engine = {
   },
   bind: function bind(el, evt, handler, modifiers) {
     el.listeners = el.listeners || {};
+    el.modifiers = el.modifiers || modifiers;
     if (!el.listeners[evt]) {
       el.listeners[evt] = [handler];
     } else {
       el.listeners[evt].push(handler);
     }
     var proxy = function proxy(e) {
-      if (modifiers) {
-        if (modifiers.prevent) e.stopPropagation();
-        if (modifiers.stop) e.stopPropagation();
-      }
       handler.call(e.target, e);
+      if (el.modifiers && el.modifiers.prevent) e.preventDefault();
+      if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     };
     if (el.addEventListener) {
       el.addEventListener(evt, proxy, false);
@@ -107,10 +107,12 @@ var prevTappedPos = null;
 var gestures = {
   tap: function tap(evt) {
     var el = evt.target;
+    var now = Date.now();
+    var touchTime = now - startTime;
     var distance = utils.getDistance(pos.start[0], pos.move ? pos.move[0] : pos.start[0]);
     clearTimeout(holdTimer);
     if (config.tapMaxDistance < distance) return false;
-    if (config.holdTime > distance && utils.getFingers(evt) <= 1) {
+    if (config.holdTime > touchTime && utils.getFingers(evt) <= 1) {
       prevTappedPos = pos.start[0];
       tapTimer = setTimeout(function () {
         engine.trigger(el, 'tap', {
@@ -146,7 +148,7 @@ var handlerOriginEvent = function handlerOriginEvent(evt) {
       if (!pos.start || pos.start.length < 2) {
         pos.start = utils.getPosOfEvent(evt);
       }
-      
+      startTime = Date.now();
       
       gestures.hold(evt);
       break;
@@ -197,7 +199,10 @@ var touchTap = {
       isFn: true,
       acceptStatement: true,
       bind: function bind(el, binding) {
-        engine.bind(el, 'hold', binding.value, binding.modifiers);
+        el.addEventListener('contextmenu', function (evt) {
+          evt.preventDefault();
+        });
+        engine.bind(el, 'hold', binding.value);
       },
       unbind: function unbind(el) {
         engine.unbind(el, 'hold');
