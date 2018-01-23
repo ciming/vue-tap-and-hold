@@ -200,7 +200,7 @@ const touchTap = {
       acceptStatement: true,
       bind (el, binding) {
         el.addEventListener('contextmenu', evt => {
-          evt.preventDefault();
+          evt.preventDefault(); 
         })
         engine.bind(el, 'hold', binding.value)
       },
