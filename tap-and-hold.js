@@ -35,11 +35,13 @@ const engine = {
       el.listeners[evt].push(handler)
     }
     const proxy = e => {
-      handler.call(e.target, e)
+      if(handler) {
+        handler.call(null, e.detail.originEvent)
+      }
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     }
-    if (el.addEventListener) {
+    if (el.listeners[evt]) {
       el.addEventListener(evt, proxy, false)
     }
   },
@@ -202,7 +204,7 @@ const touchTap = {
         el.addEventListener('contextmenu', evt => {
           evt.preventDefault();
         })
-        engine.bind(el, 'hold', binding.value)
+        engine.bind(el, 'hold', binding.value, binding.modifiers)
       },
       unbind (el) {
         engine.unbind(el, 'hold')

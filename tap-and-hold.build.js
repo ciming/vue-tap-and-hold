@@ -39,11 +39,13 @@ var engine = {
       el.listeners[evt].push(handler);
     }
     var proxy = function proxy(e) {
-      handler.call(e.target, e);
+      if (handler) {
+        handler.call(null, e.detail.originEvent);
+      }
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     };
-    if (el.addEventListener) {
+    if (el.listeners[evt]) {
       el.addEventListener(evt, proxy, false);
     }
   },
@@ -202,7 +204,7 @@ var touchTap = {
         el.addEventListener('contextmenu', function (evt) {
           evt.preventDefault();
         });
-        engine.bind(el, 'hold', binding.value);
+        engine.bind(el, 'hold', binding.value, binding.modifiers);
       },
       unbind: function unbind(el) {
         engine.unbind(el, 'hold');
