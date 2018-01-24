@@ -182,7 +182,7 @@ const handlerOriginEvent = function (evt) {
       break
   }
 }
-const touchTap = {
+const vueTapAndHold = {
   init () {
     const mouseEvents = 'mouseup mousedown mousemove mouseout'
     const touchEvents = 'touchstart touchmove touchend touchcancel'
@@ -218,4 +218,4 @@ const touchTap = {
   }
 }
 
-export default touchTap
+export default vueTapAndHold

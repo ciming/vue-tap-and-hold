@@ -45,7 +45,6 @@ var engine = {
       if (handler) {
         handler.call(null, e.detail.originEvent);
       }
-      console.log(el);
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     };
@@ -181,7 +180,7 @@ var handlerOriginEvent = function handlerOriginEvent(evt) {
       break;
   }
 };
-var touchTap = {
+var vueTapAndHold = {
   init: function init() {
     var mouseEvents = 'mouseup mousedown mousemove mouseout';
     var touchEvents = 'touchstart touchmove touchend touchcancel';
@@ -221,6 +220,6 @@ var touchTap = {
   }
 };
 
-return touchTap;
+return vueTapAndHold;
 
 })));
