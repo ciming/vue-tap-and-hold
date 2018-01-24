@@ -1,6 +1,6 @@
 {
   "name": "vue-tap-and-hold",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.3",
   "description": "This is a lightweight vue plugin for Tap Event and Long Press Event in mobile",
   "main": "tap-and-hold.build.js",
   "scripts": {
