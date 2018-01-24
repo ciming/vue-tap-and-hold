@@ -41,7 +41,6 @@ const engine = {
       if(handler) {
         handler.call(null, e.detail.originEvent)
       }
-      console.log(el)
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     }
