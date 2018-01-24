@@ -1,10 +1,12 @@
 /* eslint-disable */
+/* eslint-disable */
 let touchStart = false
 let startTime = 0
 let startEvent = null
 let endEvent = null
 let pos = {
   start: null,
+  move: null,
   end: null
 }
 
@@ -39,6 +41,7 @@ const engine = {
       if(handler) {
         handler.call(null, e.detail.originEvent)
       }
+      console.log(el)
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     }
@@ -56,7 +59,7 @@ const engine = {
   }
 }
 let config = {
-  holdTime: 1000,
+  holdTime: 650,
   tapMaxDistance: 10,
   tapTime: 200
 }
@@ -97,7 +100,11 @@ const utils = {
   },
   reset () {
     startEvent = null
-    pos = {}
+    pos = {
+      start: null,
+      move: null,
+      end: null
+    }
   }
 }
 
@@ -150,7 +157,7 @@ const handlerOriginEvent = function (evt) {
     case 'touchstart':
     case 'mousedown':
       touchStart = true
-      if (!pos.start || pos.start.length < 2) {
+      if (!pos.start) {
         pos.start = utils.getPosOfEvent(evt)
       }
       startTime = Date.now()
@@ -194,21 +201,19 @@ const touchTap = {
       bind (el, binding) {
         engine.bind(el, 'tap', binding.value, binding.modifiers)
       },
-      unbind (el) {
-        engine.unbind(el, 'tap')
+      unbind (el, binding) {
+        engine.unbind(el, 'tap', binding.value)
       }
     })
     Vue.directive('hold', {
       isFn: true,
       acceptStatement: true,
       bind (el, binding) {
-        el.addEventListener('contextmenu', evt => {
-          evt.preventDefault();
-        })
+        el.ontouchstart = function(e) { e.preventDefault(); };
         engine.bind(el, 'hold', binding.value, binding.modifiers)
       },
-      unbind (el) {
-        engine.unbind(el, 'hold')
+      unbind (el, binding) {
+        engine.unbind(el, 'hold', binding.value)
       }
     })
   }

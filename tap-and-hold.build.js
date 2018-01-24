@@ -5,10 +5,12 @@
 }(this, (function () { 'use strict';
 
 /* eslint-disable */
+/* eslint-disable */
 var touchStart = false;
 var startTime = 0;
 var pos = {
   start: null,
+  move: null,
   end: null
 };
 
@@ -43,6 +45,7 @@ var engine = {
       if (handler) {
         handler.call(null, e.detail.originEvent);
       }
+      console.log(el);
       if (el.modifiers && el.modifiers.prevent) e.preventDefault();
       if (el.modifiers && el.modifiers.stop) e.stopPropagation();
     };
@@ -60,7 +63,7 @@ var engine = {
   }
 };
 var config = {
-  holdTime: 1000,
+  holdTime: 650,
   tapMaxDistance: 10,
   tapTime: 200
 };
@@ -100,7 +103,11 @@ var utils = {
     return ev.touches ? ev.touches.length : 1;
   },
   reset: function reset() {
-    pos = {};
+    pos = {
+      start: null,
+      move: null,
+      end: null
+    };
   }
 };
 
@@ -148,7 +155,7 @@ var handlerOriginEvent = function handlerOriginEvent(evt) {
     case 'touchstart':
     case 'mousedown':
       touchStart = true;
-      if (!pos.start || pos.start.length < 2) {
+      if (!pos.start) {
         pos.start = utils.getPosOfEvent(evt);
       }
       startTime = Date.now();
@@ -194,21 +201,21 @@ var touchTap = {
       bind: function bind(el, binding) {
         engine.bind(el, 'tap', binding.value, binding.modifiers);
       },
-      unbind: function unbind(el) {
-        engine.unbind(el, 'tap');
+      unbind: function unbind(el, binding) {
+        engine.unbind(el, 'tap', binding.value);
       }
     });
     Vue.directive('hold', {
       isFn: true,
       acceptStatement: true,
       bind: function bind(el, binding) {
-        el.addEventListener('contextmenu', function (evt) {
-          evt.preventDefault();
-        });
+        el.ontouchstart = function (e) {
+          e.preventDefault();
+        };
         engine.bind(el, 'hold', binding.value, binding.modifiers);
       },
-      unbind: function unbind(el) {
-        engine.unbind(el, 'hold');
+      unbind: function unbind(el, binding) {
+        engine.unbind(el, 'hold', binding.value);
       }
     });
   }
