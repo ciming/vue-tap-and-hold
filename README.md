@@ -13,7 +13,7 @@ Vue.use(vueTap, {
 	tapTime: 200 // default is 200
 })
 ```
-You can also directly include it with a <script> tag
+You can also directly include it with a ```<script>``` tag
 
 template 
 ```html
