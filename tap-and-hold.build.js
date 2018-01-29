@@ -102,6 +102,7 @@ var utils = {
     return ev.touches ? ev.touches.length : 1;
   },
   reset: function reset() {
+    touchStart = false;
     pos = {
       start: null,
       move: null,
@@ -158,7 +159,6 @@ var handlerOriginEvent = function handlerOriginEvent(evt) {
         pos.start = utils.getPosOfEvent(evt);
       }
       startTime = Date.now();
-      
       gestures.hold(evt);
       break;
     case 'touchmove':

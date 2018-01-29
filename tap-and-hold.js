@@ -2,7 +2,6 @@
 /* eslint-disable */
 let touchStart = false
 let startTime = 0
-let startEvent = null
 let endEvent = null
 let pos = {
   start: null,
@@ -98,7 +97,7 @@ const utils = {
     return ev.touches ? ev.touches.length : 1
   },
   reset () {
-    startEvent = null
+    touchStart = false
     pos = {
       start: null,
       move: null,
@@ -160,7 +159,6 @@ const handlerOriginEvent = function (evt) {
         pos.start = utils.getPosOfEvent(evt)
       }
       startTime = Date.now()
-      startEvent = evt
       gestures.hold(evt)
       break
     case 'touchmove':
